@@ -1,9 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from './user.entity';
+import { Question } from './question.entity';
 
-export type QuizType = 'MCQ' | 'TEXT';
-
-@Entity()
+@Entity('quizzes')
 export class Quiz {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -11,17 +10,23 @@ export class Quiz {
   @Column()
   name: string;
 
-  @Column()
-  duration: number; // in minutes
+  @Column({ nullable: true })
+  description: string;
 
-  @Column()
-  start: Date;
+  @Column({ type: 'timestamptz' })
+  startTime: Date;
 
-  @Column({ type: 'enum', enum: ['MCQ', 'TEXT'], default: 'MCQ' })
-  type: QuizType;
+  @Column({ type: 'int' })
+  durationMinutes: number; 
 
-  @ManyToOne(() => User, user => user.quizzes)
+  @Column({ type: 'int' })
+  year: number; 
+
+  @ManyToOne(() => User, (user) => user.quizzes, { eager: true })
   teacher: User;
+
+  @OneToMany(() => Question, (q) => q.quiz, { cascade: true, eager: true })
+  questions: Question[];
 
   @CreateDateColumn()
   createdAt: Date;
