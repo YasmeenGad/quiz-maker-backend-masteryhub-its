@@ -1,4 +1,12 @@
-import { Controller, Post, Body, UseGuards, Request, Get, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Request,
+  Get,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
@@ -17,6 +25,14 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() dto: RegisterDto) {
+    const existingUser = await this.usersService.findByEmail(dto.email);
+    if (existingUser) {
+      return {
+        success: false,
+        message: 'Email already exists',
+      };
+    }
+
     const hashed = await bcrypt.hash(dto.password, 10);
     const created = await this.usersService.create({
       name: dto.name,
