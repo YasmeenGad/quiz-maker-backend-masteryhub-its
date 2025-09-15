@@ -42,7 +42,7 @@ export class AuthController {
     const auth = req.headers?.authorization || '';
     const token = auth.replace('Bearer ', '');
     this.blacklistService.add(token);
-    return { ok: true };
+    return { message: 'Logged out successfully' };
   }
 
   @UseGuards(JwtAuthGuard)
