@@ -12,10 +12,6 @@ import { Question } from './quizzes/question.entity';
 import { Option } from './quizzes/option.entity';
 import { Submission } from './submissions/submission.entity';
 import { Answer } from './submissions/answer.entity';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
-import { QuizzesModule } from './quizzes/quizzes.module';
-import { SubmissionsModule } from './submissions/submissions.module';
 
 @Module({
   imports: [
@@ -28,7 +24,7 @@ import { SubmissionsModule } from './submissions/submissions.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       entities: [User, Quiz, Question, Option, Submission, Answer],
-      synchronize: true, // dev only — use migrations in prod
+      synchronize: true,
     }),
     AuthModule,
     UsersModule,
