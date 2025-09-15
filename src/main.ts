@@ -15,8 +15,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
-
+  
+  app.setGlobalPrefix('api/v1');
   await app.listen(process.env.PORT || 3000);
-  console.log(`Server started on ${process.env.PORT || 3000}`);
 }
 bootstrap();
