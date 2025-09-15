@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Delete, Body, Param, Req, UseGuards } from '@nestjs/common';
 import { QuizService } from './quizzes.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
+import { API_ROUTES } from '../../constants/routes';
 
-@Controller('quiz')
+@Controller(API_ROUTES.QUIZ.ROOT)
 @UseGuards(JwtAuthGuard)
 export class QuizController {
   constructor(private readonly quizService: QuizService) {}
@@ -12,7 +13,7 @@ export class QuizController {
     return this.quizService.createQuiz(data, req.user);
   }
 
-  @Get('teacher')
+  @Get(API_ROUTES.QUIZ.TEACHER)
   async listQuizzes(@Req() req) {
     return this.quizService.listTeacherQuizzes(req.user.id);
   }
@@ -22,7 +23,7 @@ export class QuizController {
     return this.quizService.deleteQuiz(id, req.user.id);
   }
 
-  @Get('student')
+  @Get(API_ROUTES.QUIZ.STUDENT)
   async getQuizzesForStudent(@Req() req) {
     return this.quizService.getStudentQuizzes(req.user.year);
   }
