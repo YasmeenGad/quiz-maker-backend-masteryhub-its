@@ -8,8 +8,8 @@ export class Question {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Quiz, (q) => q.questions, { onDelete: 'CASCADE' })
-  quiz: Quiz;
+  // @ManyToOne(() => Quiz, (q) => q.questions, { onDelete: 'CASCADE' })
+  // quiz: Quiz;
 
   @Column()
   text: string;

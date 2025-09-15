@@ -2,6 +2,7 @@ import { Controller, Get, Post, Delete, Body, Param, Req, UseGuards } from '@nes
 import { QuizService } from './quizzes.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { API_ROUTES } from '../../constants/routes';
+import { BaseResponse } from '../../dto/base-response.dto';
 
 @Controller(API_ROUTES.QUIZ.ROOT)
 @UseGuards(JwtAuthGuard)
@@ -10,21 +11,25 @@ export class QuizController {
 
   @Post()
   async createQuiz(@Body() data, @Req() req) {
-    return this.quizService.createQuiz(data, req.user);
+    const quiz = await this.quizService.createQuiz(data, req.user);
+    return new BaseResponse(true, 'Quiz created successfully', quiz);
   }
 
   @Get(API_ROUTES.QUIZ.TEACHER)
   async listQuizzes(@Req() req) {
-    return this.quizService.listTeacherQuizzes(req.user.id);
+    const quizzes = await this.quizService.listTeacherQuizzes(req.user.id);
+    return new BaseResponse(true, 'Teacher quizzes fetched', quizzes);
   }
 
   @Delete(':id')
   async deleteQuiz(@Param('id') id: string, @Req() req) {
-    return this.quizService.deleteQuiz(id, req.user.id);
+    await this.quizService.deleteQuiz(id, req.user.id);
+    return new BaseResponse(true, 'Quiz deleted successfully');
   }
 
   @Get(API_ROUTES.QUIZ.STUDENT)
   async getQuizzesForStudent(@Req() req) {
-    return this.quizService.getStudentQuizzes(req.user.year);
+    const quizzes = await this.quizService.getStudentQuizzes(req.user.year);
+    return new BaseResponse(true, 'Quizzes for student fetched', quizzes);
   }
 }
