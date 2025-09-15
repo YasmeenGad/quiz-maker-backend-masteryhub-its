@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { QuizzesModule } from './quizzes/quizzes.module';
-import { User } from './users/user.entity';
-import { Quiz } from './quizzes/quiz.entity';
-import { Question } from './quizzes/question.entity';
-import { Submission } from './submissions/submission.entity';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { QuizzesModule } from './modules/quizzes/quizzes.module';
+import { User } from './entities/user.entity';
+import { Quiz } from './entities/quiz.entity';
+import { Question } from './entities/question.entity';
+import { Submission } from './entities/submission.entity';
 
 @Module({
   imports: [

@@ -3,9 +3,9 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtAuthGuard } from './jwt.guard';
-import { RegisterDto } from './dto/register.dto';
-import { LoginDto } from './dto/login.dto';
-import { BlacklistService } from '../auth/blacklist.service';
+import { RegisterDto } from '../../dto/register.dto';
+import { LoginDto } from '../../dto/login.dto';
+import { BlacklistService } from './blacklist.service';
 
 @Controller('auth')
 export class AuthController {
