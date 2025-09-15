@@ -16,11 +16,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: config.get('JWT_SECRET'),
+      passReqToCallback: true, // 👈 ده المهم
     });
   }
 
-  async validate(payload: any, done: Function) {
-    const token = ExtractJwt.fromAuthHeaderAsBearerToken()(this['req']);
+  async validate(req: any, payload: any) {
+    const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
     if (this.blacklistService.has(token)) {
       throw new UnauthorizedException('Token has been revoked');
     }
