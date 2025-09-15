@@ -14,6 +14,7 @@ import { JwtAuthGuard } from './jwt.guard';
 import { RegisterDto } from '../../dto/register.dto';
 import { LoginDto } from '../../dto/login.dto';
 import { BlacklistService } from './blacklist.service';
+import { BaseResponse } from 'src/dto/base-response.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -27,10 +28,7 @@ export class AuthController {
   async register(@Body() dto: RegisterDto) {
     const existingUser = await this.usersService.findByEmail(dto.email);
     if (existingUser) {
-      return {
-        success: false,
-        message: 'Email already exists',
-      };
+      return new BaseResponse(false, 'Email already exists');
     }
 
     const hashed = await bcrypt.hash(dto.password, 10);
@@ -42,28 +40,31 @@ export class AuthController {
       year: dto.year,
     });
     delete (created as any).password;
-    return created;
+
+    return new BaseResponse(true, 'User created successfully', created);
   }
 
   @Post('login')
   async login(@Body() dto: LoginDto) {
     const user = await this.authService.validateUser(dto.email, dto.password);
-    if (!user) throw new UnauthorizedException('Invalid credentials');
-    return this.authService.login(user);
+    if (!user) {
+      return new BaseResponse(false, 'Invalid credentials');
+    }
+    const tokenData = await this.authService.login(user);
+    return new BaseResponse(true, 'Login successful', tokenData);
   }
-
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Request() req: any) {
     const auth = req.headers?.authorization || '';
     const token = auth.replace('Bearer ', '');
     this.blacklistService.add(token);
-    return { message: 'Logged out successfully' };
+    return new BaseResponse(true, 'Logout successful');
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
   me(@Request() req: any) {
-    return req.user;
+    return new BaseResponse(true, 'User fetched successfully', req.user);
   }
 }
