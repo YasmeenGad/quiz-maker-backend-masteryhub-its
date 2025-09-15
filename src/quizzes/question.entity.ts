@@ -17,9 +17,9 @@ export class Question {
   @Column({ type: 'enum', enum: ['mcq', 'text'] })
   type: QuestionType;
 
-  @Column({ type: 'json', nullable: true })
-  options: string[]; 
+  @Column({ type: 'jsonb', nullable: true })
+  options: string[] | null;
 
-  @Column({ nullable: true })
-  correctAnswer: string | null;
+  @Column({ type: 'jsonb', nullable: true })
+  correctAnswer: string | string[] | null;
 }

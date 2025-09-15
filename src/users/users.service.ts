@@ -17,7 +17,6 @@ export class UsersService {
   }
 
   async findByEmailWithPassword(email: string) {
-    // need password field
     return this.repo.createQueryBuilder('u').addSelect('u.password').where('u.email = :email', { email }).getOne();
   }
 

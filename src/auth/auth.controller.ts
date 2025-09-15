@@ -1,38 +1,29 @@
-import { Controller, Post, Body, UseGuards, Request, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Request, Get, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtAuthGuard } from './jwt.guard';
-
-class RegisterDto {
-  name: string;
-  email: string;
-  password: string;
-  role: 'student' | 'teacher';
-  year: number;
-}
-
-class LoginDto {
-  email: string;
-  password: string;
-}
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { BlacklistService } from '../auth/blacklist.service';
 
 @Controller('auth')
 export class AuthController {
-  private tokenBlacklist = new Set<string>(); // simple in-memory
-
-  constructor(private authService: AuthService, private usersService: UsersService) {}
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService,
+    private blacklistService: BlacklistService,
+  ) {}
 
   @Post('register')
   async register(@Body() dto: RegisterDto) {
-    // basic validation (you can use DTO + class-validator)
     const hashed = await bcrypt.hash(dto.password, 10);
     const created = await this.usersService.create({
       name: dto.name,
       email: dto.email,
       password: hashed,
       role: dto.role,
-      year: dto.year ?? null,
+      year: dto.year,
     });
     delete (created as any).password;
     return created;
@@ -41,17 +32,16 @@ export class AuthController {
   @Post('login')
   async login(@Body() dto: LoginDto) {
     const user = await this.authService.validateUser(dto.email, dto.password);
-    if (!user) throw new Error('Invalid credentials');
+    if (!user) throw new UnauthorizedException('Invalid credentials');
     return this.authService.login(user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Request() req: any) {
-    // Add token to blacklist (note: ephemeral in-memory)
     const auth = req.headers?.authorization || '';
     const token = auth.replace('Bearer ', '');
-    this.tokenBlacklist.add(token);
+    this.blacklistService.add(token);
     return { ok: true };
   }
 
