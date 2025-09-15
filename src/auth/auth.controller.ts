@@ -25,7 +25,6 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() dto: RegisterDto) {
-    // basic validation (you can use DTO + class-validator)
     const hashed = await bcrypt.hash(dto.password, 10);
     const created = await this.usersService.create({
       name: dto.name,
@@ -48,7 +47,6 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Request() req: any) {
-    // Add token to blacklist (note: ephemeral in-memory)
     const auth = req.headers?.authorization || '';
     const token = auth.replace('Bearer ', '');
     this.tokenBlacklist.add(token);
