@@ -1,8 +1,18 @@
-import { Controller, Get, Post, Delete, Body, Param, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { QuizService } from './quizzes.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { API_ROUTES } from '../../constants/routes';
-import { BaseResponse } from '../../dto/base-response.dto';
+import { BaseResponse } from '../../dto/base_response_dto';
+import { CreateQuizDto } from '../../dto/create_quiz_dto';
 
 @Controller(API_ROUTES.QUIZ.ROOT)
 @UseGuards(JwtAuthGuard)
@@ -10,7 +20,7 @@ export class QuizController {
   constructor(private readonly quizService: QuizService) {}
 
   @Post()
-  async createQuiz(@Body() data, @Req() req) {
+  async createQuiz(@Body() data: CreateQuizDto, @Req() req) {
     const quiz = await this.quizService.createQuiz(data, req.user);
     return new BaseResponse(true, 'Quiz created successfully', quiz);
   }

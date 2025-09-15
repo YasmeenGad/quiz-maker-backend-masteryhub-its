@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Quiz } from '../../entities/quiz.entity';
 import { User } from '../../entities/user.entity';
+import { CreateQuizDto } from '../../dto/create_quiz_dto';
 
 @Injectable()
 export class QuizService {
@@ -11,8 +12,19 @@ export class QuizService {
     private readonly quizRepo: Repository<Quiz>,
   ) {}
 
-  async createQuiz(data: Partial<Quiz>, teacher: User) {
-    const quiz = this.quizRepo.create({ ...data, teacher });
+  async createQuiz(data: CreateQuizDto, teacher: User) {
+    const quiz = this.quizRepo.create({
+      name: data.name,
+      duration: data.duration,
+      start: new Date(data.start),
+      teacher,
+      questions: data.questions.map((q) => ({
+        text: q.text,
+        type: q.type,
+        options: q.options || null,
+        correctAnswer: q.correctAnswer || null,
+      })),
+    });
     return this.quizRepo.save(quiz);
   }
 
@@ -21,7 +33,9 @@ export class QuizService {
   }
 
   async deleteQuiz(id: string, teacherId: string) {
-    const quiz = await this.quizRepo.findOne({ where: { id, teacher: { id: teacherId } } });
+    const quiz = await this.quizRepo.findOne({
+      where: { id, teacher: { id: teacherId } },
+    });
     if (!quiz) throw new NotFoundException('Quiz not found');
     await this.quizRepo.remove(quiz);
     return { success: true };

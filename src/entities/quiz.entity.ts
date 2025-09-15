@@ -1,5 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { User } from './user.entity';
+import { Question } from './question.entity';
 
 export type QuizType = 'MCQ' | 'TEXT';
 
@@ -12,7 +21,7 @@ export class Quiz {
   name: string;
 
   @Column()
-  duration: number; // in minutes
+  duration: number;
 
   @Column()
   start: Date;
@@ -20,7 +29,7 @@ export class Quiz {
   @Column({ type: 'enum', enum: ['MCQ', 'TEXT'], default: 'MCQ' })
   type: QuizType;
 
-  @ManyToOne(() => User, user => user.quizzes)
+  @ManyToOne(() => User, (user) => user.quizzes)
   teacher: User;
 
   @CreateDateColumn()
@@ -28,4 +37,7 @@ export class Quiz {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Question, (question) => question.quiz, { cascade: true })
+  questions: Question[];
 }

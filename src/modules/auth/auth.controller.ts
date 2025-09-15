@@ -14,7 +14,7 @@ import { JwtAuthGuard } from './jwt.guard';
 import { RegisterDto } from '../../dto/register.dto';
 import { LoginDto } from '../../dto/login.dto';
 import { BlacklistService } from './blacklist.service';
-import { BaseResponse } from 'src/dto/base-response.dto';
+import { BaseResponse } from 'src/dto/base_response_dto';
 import { API_ROUTES } from '../../constants/routes';
 
 @Controller(API_ROUTES.AUTH.ROOT)
