@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Quiz } from '../quizzes/quiz.entity';
-import { Submission } from '../submissions/submission.entity';
+import { Quiz } from '../entities/quiz.entity';
+import { Submission } from '../entities/submission.entity';
 
 export type UserRole = 'student' | 'teacher';
 
