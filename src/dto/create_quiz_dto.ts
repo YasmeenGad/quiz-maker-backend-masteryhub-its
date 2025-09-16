@@ -14,6 +14,9 @@ export class CreateQuizDto {
   @IsDateString()
   start: string;
 
+  @IsNumber()
+  year: number;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateQuestionDto)
