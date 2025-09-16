@@ -7,15 +7,15 @@ import {
   Get,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { UsersService } from '../users/users.service';
+import { AuthService } from '../service/auth.service';
+import { UsersService } from '../service/users.service';
 import * as bcrypt from 'bcrypt';
-import { JwtAuthGuard } from './jwt.guard';
-import { RegisterDto } from '../../dto/register.dto';
-import { LoginDto } from '../../dto/login.dto';
-import { BlacklistService } from './blacklist.service';
+import { JwtAuthGuard } from '../guard/jwt.guard';
+import { RegisterDto } from '../dto/register.dto';
+import { LoginDto } from '../dto/login.dto';
+import { BlacklistService } from '../service/blacklist.service';
 import { BaseResponse } from 'src/dto/base_response_dto';
-import { API_ROUTES } from '../../constants/routes';
+import { API_ROUTES } from '../constants/api_routes';
 
 @Controller(API_ROUTES.AUTH.ROOT)
 export class AuthController {

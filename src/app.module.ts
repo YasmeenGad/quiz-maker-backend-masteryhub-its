@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
-import { QuizzesModule } from './modules/quizzes/quizzes.module';
+import { AuthModule } from './modules/auth.module';
+import { UsersModule } from './modules/users.module';
+import { QuizzesModule } from './modules/quizzes.module';
 import { User } from './entities/user.entity';
 import { Quiz } from './entities/quiz.entity';
 import { Question } from './entities/question.entity';

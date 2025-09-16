@@ -8,11 +8,11 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { QuizService } from './quizzes.service';
-import { JwtAuthGuard } from '../auth/jwt.guard';
-import { API_ROUTES } from '../../constants/routes';
-import { BaseResponse } from '../../dto/base_response_dto';
-import { CreateQuizDto } from '../../dto/create_quiz_dto';
+import { QuizService } from '../service/quizzes.service';
+import { JwtAuthGuard } from '../guard/jwt.guard';
+import { API_ROUTES } from '../constants/api_routes';
+import { BaseResponse } from '../dto/base_response_dto';
+import { CreateQuizDto } from '../dto/create_quiz_dto';
 
 @Controller(API_ROUTES.QUIZ.ROOT)
 @UseGuards(JwtAuthGuard)
