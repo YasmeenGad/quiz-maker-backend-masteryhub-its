@@ -23,6 +23,9 @@ export class Quiz {
   @Column()
   duration: number;
 
+  @Column({ type: 'int' })
+  year: number;
+
   @Column()
   start: Date;
 
