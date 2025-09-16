@@ -14,9 +14,10 @@ import { JwtAuthGuard } from './jwt.guard';
 import { RegisterDto } from '../../dto/register.dto';
 import { LoginDto } from '../../dto/login.dto';
 import { BlacklistService } from './blacklist.service';
-import { BaseResponse } from 'src/dto/base-response.dto';
+import { BaseResponse } from 'src/dto/base_response_dto';
+import { API_ROUTES } from '../../constants/routes';
 
-@Controller('auth')
+@Controller(API_ROUTES.AUTH.ROOT)
 export class AuthController {
   constructor(
     private authService: AuthService,
@@ -24,7 +25,7 @@ export class AuthController {
     private blacklistService: BlacklistService,
   ) {}
 
-  @Post('register')
+  @Post(API_ROUTES.AUTH.REGISTER)
   async register(@Body() dto: RegisterDto) {
     const existingUser = await this.usersService.findByEmail(dto.email);
     if (existingUser) {
@@ -44,7 +45,7 @@ export class AuthController {
     return new BaseResponse(true, 'User created successfully', created);
   }
 
-  @Post('login')
+  @Post(API_ROUTES.AUTH.LOGIN)
   async login(@Body() dto: LoginDto) {
     const user = await this.authService.validateUser(dto.email, dto.password);
     if (!user) {
@@ -54,7 +55,7 @@ export class AuthController {
     return new BaseResponse(true, 'Login successful', tokenData);
   }
   @UseGuards(JwtAuthGuard)
-  @Post('logout')
+  @Post(API_ROUTES.AUTH.LOGOUT)
   async logout(@Request() req: any) {
     const auth = req.headers?.authorization || '';
     const token = auth.replace('Bearer ', '');
@@ -63,7 +64,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('me')
+  @Get(API_ROUTES.AUTH.ME)
   me(@Request() req: any) {
     return new BaseResponse(true, 'User fetched successfully', req.user);
   }
