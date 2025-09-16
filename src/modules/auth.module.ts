@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from '../service/auth.service';
-import { AuthController } from './auth.controller';
-import { JwtStrategy } from './auth/jwt.strategy';
+import { AuthController } from '../controller/auth.controller';
+import { JwtStrategy } from '../guard/jwt.strategy';
 import { UsersModule } from './users.module';
 import { BlacklistService } from '../service/blacklist.service';
 
