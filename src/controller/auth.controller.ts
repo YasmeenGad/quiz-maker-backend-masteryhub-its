@@ -65,7 +65,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get(API_ROUTES.AUTH.ME)
-  getCurrentUser(@Request() req: any) {
+  getProfile(@Request() req: any) {
     return new BaseResponse(true, 'User fetched successfully', req.user);
   }
 }
