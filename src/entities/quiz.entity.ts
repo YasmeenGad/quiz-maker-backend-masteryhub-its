@@ -23,7 +23,7 @@ export class Quiz {
   @Column()
   duration: number;
 
-  @Column({ type: 'int' })
+  @Column({ type: 'int' , nullable: true})
   year: number;
 
   @Column()

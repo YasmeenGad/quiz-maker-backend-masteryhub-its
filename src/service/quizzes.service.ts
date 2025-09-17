@@ -17,6 +17,7 @@ export class QuizService {
       name: data.name,
       duration: data.duration,
       start: new Date(data.start),
+      year: data.year,
       teacher,
       questions: data.questions.map((q) => ({
         text: q.text,
@@ -29,7 +30,7 @@ export class QuizService {
   }
 
   async listTeacherQuizzes(teacherId: string) {
-    return this.quizRepo.find({ where: { teacher: { id: teacherId } } });
+    return this.quizRepo.find({ where: { teacher: { id: teacherId } }, relations: ['questions'] });
   }
 
   async deleteQuiz(id: string, teacherId: string) {
@@ -45,7 +46,7 @@ export class QuizService {
     return this.quizRepo
       .createQueryBuilder('quiz')
       .innerJoinAndSelect('quiz.teacher', 'teacher')
-      .where('teacher.year = :year', { year })
+      .where('quiz.year = :year', { year })
       .getMany();
   }
 }

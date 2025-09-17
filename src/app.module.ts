@@ -8,6 +8,7 @@ import { User } from './entities/user.entity';
 import { Quiz } from './entities/quiz.entity';
 import { Question } from './entities/question.entity';
 import { Submission } from './entities/submission.entity';
+import { StudentModule } from './modules/student.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { Submission } from './entities/submission.entity';
     AuthModule,
     UsersModule,
     QuizzesModule,
+    StudentModule,
   ],
 })
 export class AppModule {}

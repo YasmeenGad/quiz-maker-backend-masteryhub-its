@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 import { User } from './user.entity';
 import { Quiz } from './quiz.entity';
 
@@ -10,14 +16,14 @@ export class Submission {
   @ManyToOne(() => User, (u) => u.submissions, { eager: true })
   student: User;
 
-  @ManyToOne(() => Quiz, { eager: true })
+  @ManyToOne(() => Quiz, { eager: true, onDelete: 'CASCADE' })
   quiz: Quiz;
 
   @Column({ type: 'json' })
-  answers: { questionId: string; answer: string }[]; 
+  answers: { questionId: string; answer: string }[];
 
   @Column({ type: 'float', nullable: true })
-  autoScore: number | null; 
+  autoScore: number | null;
 
   @Column({ default: false })
   needsManualGrading: boolean;
