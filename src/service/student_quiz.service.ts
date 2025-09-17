@@ -36,28 +36,32 @@ export class StudentQuizService {
   }
 
   async getQuizForStudent(quizId: string, studentYear: number) {
-    const quiz = await this.quizRepo.findOne({
-      where: { id: quizId },
-      relations: ['questions'],
-    });
-    if (!quiz) throw new NotFoundException('Quiz not found');
-    if (quiz.year !== studentYear) throw new ForbiddenException('Quiz not available for your year');
+  const quiz = await this.quizRepo.findOne({
+    where: { id: quizId },
+    relations: ['questions'],
+  });
+  if (!quiz) throw new NotFoundException('Quiz not found');
 
-    const questions = (quiz.questions || []).map((q) => ({
-      id: q.id,
-      text: q.text,
-      type: q.type,
-      options: q.options || [],
-    }));
-
-    return {
-      id: quiz.id,
-      name: quiz.name,
-      start: quiz.start,
-      duration: quiz.duration,
-      year: quiz.year,
-      isOpen: this.isOpen(quiz),
-      questions,
-    };
+  if (Number(quiz.year) !== Number(studentYear)) {
+    throw new ForbiddenException('Quiz not available for your year');
   }
+
+  const questions = (quiz.questions || []).map((q) => ({
+    id: q.id,
+    text: q.text,
+    type: q.type,
+    options: q.options || [],
+  }));
+
+  return {
+    id: quiz.id,
+    name: quiz.name,
+    start: quiz.start,
+    duration: quiz.duration,
+    year: quiz.year,
+    isOpen: this.isOpen(quiz),
+    questions,
+  };
+}
+
 }
