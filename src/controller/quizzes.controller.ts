@@ -26,7 +26,7 @@ export class QuizController {
   }
 
   @Get(API_ROUTES.QUIZ.TEACHER)
-  async listQuizzes(@Req() req) {
+  async getTeacherQuizzes(@Req() req) {
     const quizzes = await this.quizService.listTeacherQuizzes(req.user.id);
     return new BaseResponse(true, 'Teacher quizzes fetched', quizzes);
   }
@@ -38,7 +38,7 @@ export class QuizController {
   }
 
   @Get(API_ROUTES.QUIZ.STUDENT)
-  async getQuizzesForStudent(@Req() req) {
+  async getStudentQuizzes(@Req() req) {
     const quizzes = await this.quizService.getStudentQuizzes(req.user.year);
     return new BaseResponse(true, 'Quizzes for student fetched', quizzes);
   }
