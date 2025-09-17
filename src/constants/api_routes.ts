@@ -4,7 +4,7 @@ export const API_ROUTES = {
     REGISTER: 'register',
     LOGIN: 'login',
     LOGOUT: 'logout',
-    ME: 'profile',
+    PROFILE: 'profile',
   },
 
   QUIZ: {
